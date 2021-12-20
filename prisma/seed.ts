@@ -16,12 +16,24 @@ const run = async () => {
             create: artist.songs.map((song) => ({
               name: song.name,
               duration: song.duration,
+              url: song.url, 
             })),
           },
         },
       });
     })
   );
+  const salt = bcrypt.genSaltSync()
+  const user = await prisma.user.upsert ({
+      where: {email: 'user@test.com'},
+      update: {},
+      create: {
+          email: 'user@gate.com',
+          password: bcrypt.hashSync('password', salt), 
+
+          }
+      }
+  })
 };
 
 run()
